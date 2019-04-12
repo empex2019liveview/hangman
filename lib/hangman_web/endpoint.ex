@@ -40,7 +40,7 @@ defmodule HangmanWeb.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_hangman_key",
-    signing_salt: "FG0eTAIa"
+    signing_salt: "KqxoSDau"
 
   plug HangmanWeb.Router
 end
