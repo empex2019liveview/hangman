@@ -74,7 +74,7 @@ defmodule HangmanWeb.PageLiveView do
     {:noreply, socket |> assign_game()}
   end
 
-  defp assign_game(socket), do: assign_game(socket, Stepper.new(Hangman, "shawshank"))
+  defp assign_game(socket), do: assign_game(socket, Stepper.new(Hangman, Hangman.Words.pick()))
 
   defp assign_game(socket, stepper) do
     socket
