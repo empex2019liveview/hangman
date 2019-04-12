@@ -12,7 +12,10 @@ config :hangman, HangmanWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "JF7FYPQtBKHNeakLe1xES6jB5oLYmBk6EkLm5nbUq9JXlAS8licCxSJz0SK1pxBU",
   render_errors: [view: HangmanWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Hangman.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Hangman.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "2Po884zQAmcxAUlYVxZU3G41ddUPwK5iIohxaXRGvpfjMkRCtV31SJUK2YgjkpZ2"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -21,6 +24,9 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Enable LiveView
+config :phoenix, template_engines: [leex: Phoenix.LiveView.Engine]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
