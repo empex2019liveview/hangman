@@ -75,15 +75,7 @@ defmodule HangmanWeb.PageLiveView do
   end
 
   def mount(_session, socket) do
-    s = Stepper.new(Hangman, "shawshank")
-    {_r, s} = Stepper.run(s, {:make_move, "a"})
-    {_r, s} = Stepper.run(s, {:make_move, "z"})
-    {_r, s} = Stepper.run(s, {:make_move, "w"})
-    {_r, s} = Stepper.run(s, {:make_move, "o"})
-    {_r, s} = Stepper.run(s, {:make_move, "x"})
-    {r, s} = Stepper.run(s, {:make_move, "y"})
-
-    {:ok, socket |> assign_game(s) |> assign_reply("y", r)}
+    {:ok, socket |> assign_game()}
   end
 
   defp assign_game(socket), do: assign_game(socket, Stepper.new(Hangman, "shawshank"))
