@@ -23,22 +23,7 @@ defmodule HangmanWeb.PageLiveView do
     ~L"""
     <div class="hangman" data-cheater=<%= @answer %>>
       <div class="move-reply">
-        <%= Phoenix.HTML.raw(case @move_reply do
-              nil -> "Welcome to hangman"
-              :bad_guess -> "Sorry, <span>#{@letter}</span> not found!"
-              :good_guess -> "Excellent, <span>#{@letter}</span> found."
-              :game_won -> "WON"
-              :game_lost -> "GAME OVER, you lose"
-              :already_tried -> "Silly, you already guess <span>#{@letter}</span>"
-              _ -> @move_reply
-            end) %>
-
-        <%= case @turns_left do
-              7 -> ""
-              1 -> "(1 error remaining"
-              0 -> "(no errors remaining)"
-              _ -> "(#{@turns_left} errors remaining)"
-            end %>
+        <%= assigns |> top_message() |>  Phoenix.HTML.raw() %>
       </div>
       <svg width="159px" height="144px" viewBox="0 0 159 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <g id="hangman" stroke="none" stroke-width="1" fill-rule="evenodd">
@@ -65,8 +50,10 @@ defmodule HangmanWeb.PageLiveView do
       </div>
       <div class="form">
         <form phx-submit="guess">
-          <input name="letter" type="text" maxlength="1" />
-          <input type="submit" class="btn-guess" value="Guess" />
+          <%= if @continue do %>
+            <input name="letter" type="text" maxlength="1" />
+            <input type="submit" class="btn-guess" value="Guess" />
+          <% end %>
           <button class="btn-new" phx-click="new-game">New</button>
         </form>
       </div>
@@ -103,6 +90,7 @@ defmodule HangmanWeb.PageLiveView do
     |> assign(:turns_left, stepper.model.turns_left)
     |> assign(:word_so_far, Hangman.Model.word_so_far(stepper.model))
     |> assign(:move_reply, nil)
+    |> assign(:continue, true)
     |> assign(:letter, nil)
   end
 
@@ -110,6 +98,14 @@ defmodule HangmanWeb.PageLiveView do
     socket
     |> assign(:move_reply, reply)
     |> assign(:letter, letter)
+    |> assign(
+      :continue,
+      case reply do
+        :game_won -> false
+        :game_lost -> false
+        _ -> true
+      end
+    )
   end
 
   defp body_part(num, s) do
@@ -117,6 +113,30 @@ defmodule HangmanWeb.PageLiveView do
       s.model.turns_left == num -> :new
       s.model.turns_left < num -> :on
       s.model.turns_left > num -> :off
+    end
+  end
+
+  defp top_message(assigns) do
+    assigns[:move_reply]
+    |> case do
+      nil -> {:stop, "Welcome to hangman"}
+      :game_won -> {:stop, "Congratulations, you WON"}
+      :game_lost -> {:stop, "GAME OVER, you lose"}
+      :bad_guess -> {:continue, "Sorry, <span>#{assigns.letter}</span> not found!"}
+      :good_guess -> {:continue, "Excellent, <span>#{assigns.letter}</span> found."}
+      :already_tried -> {:continue, "Silly, you already guess <span>#{assigns.letter}</span>"}
+      move_reply -> move_reply
+    end
+    |> case do
+      {:stop, msg} ->
+        msg
+
+      {:continue, msg} ->
+        case assigns.turns_left do
+          1 -> "#{msg} (1 error remaining"
+          0 -> "#{msg} (no errors remaining)"
+          turns_left -> "#{msg} (#{turns_left} errors remaining)"
+        end
     end
   end
 
