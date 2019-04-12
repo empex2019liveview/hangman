@@ -1,3 +1,71 @@
 *,*:after,*:before{box-sizing:inherit}html{box-sizing:border-box;font-size:62.5%}body{color:#000000;font-family:'Helvetica', 'Arial', sans-serif;font-size:1.6em;font-weight:300;line-height:1.6}
 /* This file is for your main application css. */
 
+
+.hangman {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hangman svg {
+  width: 500px;
+  height: auto;
+}
+
+.hangman .word span {
+  font-size: 50px;
+}
+
+.hangman .word span + span {
+  padding-left: 20px;
+}
+
+.hangman .form input[type='text'] {
+  width: 50px;
+  font-size: 50px;
+  height: 75px;
+  border: 1px solid #ABDB5E;
+  color: #94C843;
+  text-align: center;
+}
+
+.hangman .form input[type='submit'], .hangman .form button {
+  font-size: 50px;
+  height: 75px;
+}
+
+.move-reply {
+  font-size: 20px;
+  color: #A39E93;
+}
+
+.move-reply span {
+  font-size: 25px;
+  color: #94C843;
+}
+
+.btn-guess {
+  background-color: #ABDB5E;
+  padding: 0 10px 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-guess:hover {
+  background-color: #94C843;
+  color: #F2FDE0;
+}
+
+.btn-new {
+  background-color: #54D1DB;
+  color: #0E7C86;
+  padding: 0 10px 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-new:hover {
+  background-color: #0E7C86;
+  color: #54D1DB;
+}
+
