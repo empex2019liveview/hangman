@@ -64,10 +64,10 @@ defmodule HangmanWeb.PageLiveView do
         <% end %>
       </div>
       <div class="form">
-        <form>
+        <form phx-submit="guess">
           <input name="letter" type="text" maxlength="1" />
           <input type="submit" class="btn-guess" value="Guess" />
-          <button class="btn-new">New</button>
+          <button class="btn-new" phx-click="new-game">New</button>
         </form>
       </div>
     </div>
@@ -76,6 +76,15 @@ defmodule HangmanWeb.PageLiveView do
 
   def mount(_session, socket) do
     {:ok, socket |> assign_game()}
+  end
+
+  def handle_event("guess", %{"letter" => l}, socket) do
+    {r, s} = Stepper.run(socket.assigns.stepper, {:make_move, l})
+    {:noreply, socket |> assign_game(s) |> assign_reply(l, r)}
+  end
+
+  def handle_event("new-game", _, socket) do
+    {:noreply, socket |> assign_game()}
   end
 
   defp assign_game(socket), do: assign_game(socket, Stepper.new(Hangman, "shawshank"))
