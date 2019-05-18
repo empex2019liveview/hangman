@@ -34,6 +34,10 @@
   height: 75px;
 }
 
+.hangman .won, .hangman .lost {
+  font-size: 100px;
+}
+
 .move-reply {
   font-size: 20px;
   color: #A39E93;

@@ -22,8 +22,8 @@ defmodule HangmanWeb.PageView do
     assigns[:move_reply]
     |> case do
       nil -> {:stop, "Welcome to hangman"}
-      :game_won -> {:stop, "Congratulations, you WON"}
-      :game_lost -> {:stop, "GAME OVER, you lose"}
+      :game_won -> {:stop, "<span class=\"won\">Congratulations, you WON</span>"}
+      :game_lost -> {:stop, "<span class=\"lost\">GAME OVER, you lose</span>"}
       :bad_guess -> {:continue, "Sorry, <span>#{assigns.letter}</span> not found!"}
       :good_guess -> {:continue, "Excellent, <span>#{assigns.letter}</span> found."}
       :already_tried -> {:continue, "Silly, you already guess <span>#{assigns.letter}</span>"}
