@@ -23,7 +23,7 @@ defmodule HangmanWeb do
 
       import Plug.Conn
       import HangmanWeb.Gettext
-
+      import Phoenix.LiveView.Controller, only: [live_render: 3]
       alias HangmanWeb.Router.Helpers, as: Routes
     end
   end
